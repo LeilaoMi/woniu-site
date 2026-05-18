@@ -1,515 +1,569 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>我的主页</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#9b84e0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1a1a2e" media="(prefers-color-scheme: dark)">
+<meta name="description" content="蜗牛主页 · 时钟 · 天气 · 农历 · 节日 · 倒计时 · 待办 · 番茄钟 · 一言">
+<meta property="og:title" content="蜗牛主页">
+<meta property="og:description" content="温柔实用的个人起始页">
+<meta property="og:image" content="icon.svg">
+<meta property="og:type" content="website">
+<title>蜗牛主页</title>
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.font.im" crossorigin>
+<link href="https://fonts.font.im/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-grad:linear-gradient(135deg,#e8f4fd 0%,#d4f5ee 40%,#fde8f5 100%);
+  --card:rgba(255,255,255,.75);
+  --card-border:rgba(255,255,255,.9);
+  --card-clock:linear-gradient(135deg,rgba(232,244,253,.9),rgba(255,255,255,.85));
+  --card-weather:linear-gradient(135deg,rgba(212,240,232,.9),rgba(255,255,255,.85));
+  --card-calendar:linear-gradient(135deg,rgba(255,240,250,.9),rgba(255,255,255,.85));
+  --card-countdown:linear-gradient(135deg,rgba(237,232,253,.9),rgba(255,255,255,.85));
+  --card-todo:linear-gradient(135deg,rgba(253,232,216,.9),rgba(255,255,255,.85));
+  --card-pomo:linear-gradient(135deg,rgba(255,228,225,.9),rgba(255,255,255,.85));
+  --card-quote:linear-gradient(135deg,rgba(232,253,244,.9),rgba(255,255,255,.85));
+  --text:#2c3e50;
+  --text-soft:#7f8c8d;
+  --accent:#9b84e0;
+  --accent2:#4a90c4;
+  --danger:#e07070;
+  --shadow:0 4px 24px rgba(0,0,0,.07);
+  --radius:24px;
+  --blob1:radial-gradient(circle,rgba(180,230,255,.5),transparent 70%);
+  --blob2:radial-gradient(circle,rgba(200,255,220,.4),transparent 70%);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg-grad:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#2a1b3d 100%);
+    --card:rgba(40,42,60,.6);
+    --card-border:rgba(255,255,255,.08);
+    --card-clock:linear-gradient(135deg,rgba(56,72,109,.7),rgba(40,42,60,.6));
+    --card-weather:linear-gradient(135deg,rgba(50,90,80,.7),rgba(40,42,60,.6));
+    --card-calendar:linear-gradient(135deg,rgba(90,60,90,.7),rgba(40,42,60,.6));
+    --card-countdown:linear-gradient(135deg,rgba(72,60,110,.7),rgba(40,42,60,.6));
+    --card-todo:linear-gradient(135deg,rgba(110,80,55,.65),rgba(40,42,60,.6));
+    --card-pomo:linear-gradient(135deg,rgba(120,60,70,.65),rgba(40,42,60,.6));
+    --card-quote:linear-gradient(135deg,rgba(55,100,85,.7),rgba(40,42,60,.6));
+    --text:#e8e8f0;
+    --text-soft:#9ba0b3;
+    --shadow:0 4px 24px rgba(0,0,0,.3);
+    --blob1:radial-gradient(circle,rgba(100,130,200,.3),transparent 70%);
+    --blob2:radial-gradient(circle,rgba(150,100,200,.25),transparent 70%);
+  }
+}
+html[data-theme="light"]{color-scheme:light}
+html[data-theme="dark"]{color-scheme:dark;
+  --bg-grad:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#2a1b3d 100%);
+  --card:rgba(40,42,60,.6);--card-border:rgba(255,255,255,.08);
+  --card-clock:linear-gradient(135deg,rgba(56,72,109,.7),rgba(40,42,60,.6));
+  --card-weather:linear-gradient(135deg,rgba(50,90,80,.7),rgba(40,42,60,.6));
+  --card-calendar:linear-gradient(135deg,rgba(90,60,90,.7),rgba(40,42,60,.6));
+  --card-countdown:linear-gradient(135deg,rgba(72,60,110,.7),rgba(40,42,60,.6));
+  --card-todo:linear-gradient(135deg,rgba(110,80,55,.65),rgba(40,42,60,.6));
+  --card-pomo:linear-gradient(135deg,rgba(120,60,70,.65),rgba(40,42,60,.6));
+  --card-quote:linear-gradient(135deg,rgba(55,100,85,.7),rgba(40,42,60,.6));
+  --text:#e8e8f0;--text-soft:#9ba0b3;--shadow:0 4px 24px rgba(0,0,0,.3);
+  --blob1:radial-gradient(circle,rgba(100,130,200,.3),transparent 70%);
+  --blob2:radial-gradient(circle,rgba(150,100,200,.25),transparent 70%);
+}
+body{font-family:'DM Sans','Noto Sans SC',sans-serif;background:var(--bg-grad);min-height:100vh;color:var(--text);padding:24px 16px 60px;overflow-x:hidden;transition:background .4s,color .3s}
+body::before,body::after{content:'';position:fixed;border-radius:50%;filter:blur(80px);z-index:0;pointer-events:none}
+body::before{width:400px;height:400px;background:var(--blob1);top:-100px;right:-100px}
+body::after{width:300px;height:300px;background:var(--blob2);bottom:-80px;left:-80px}
+.container{max-width:760px;margin:0 auto;position:relative;z-index:1}
+.theme-toggle{position:fixed;top:18px;right:18px;width:42px;height:42px;border-radius:50%;border:1px solid var(--card-border);background:var(--card);backdrop-filter:blur(16px);cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;z-index:10;color:var(--text);box-shadow:var(--shadow)}
+.greeting{text-align:center;margin-bottom:28px;animation:fadeUp .6s ease both}
+.greeting h1{font-family:'DM Serif Display',serif;font-size:2rem;letter-spacing:-.5px}
+.greeting p{color:var(--text-soft);font-size:.85rem;margin-top:4px;font-weight:300}
+.grid{display:grid;grid-template-columns:1fr;gap:16px}
+@media (min-width:680px){.grid{grid-template-columns:1fr 1fr}.card.span-2{grid-column:1/-1}}
+.card{background:var(--card);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);border:1px solid var(--card-border);animation:fadeUp .6s ease both}
+.card:nth-child(1){animation-delay:.02s}
+.card:nth-child(2){animation-delay:.05s}
+.card:nth-child(3){animation-delay:.08s}
+.card:nth-child(4){animation-delay:.11s}
+.card:nth-child(5){animation-delay:.14s}
+.card:nth-child(6){animation-delay:.17s}
+.card:nth-child(7){animation-delay:.20s}
+.card-label{font-size:.7rem;font-weight:500;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-soft);margin-bottom:12px;display:flex;align-items:center;gap:6px}
 
-    :root {
-      --sky: #e8f4fd;
-      --mint: #d4f0e8;
-      --peach: #fde8d8;
-      --lavender: #ede8fd;
-      --cream: #fffdf8;
-      --text: #2c3e50;
-      --text-soft: #7f8c8d;
-      --white: #ffffff;
-      --shadow: 0 4px 24px rgba(0,0,0,0.07);
-      --radius: 24px;
-    }
+.clock-card{background:var(--card-clock)}
+.clock-time{font-family:'DM Serif Display',serif;font-size:3.6rem;line-height:1;letter-spacing:-2px}
+.clock-time span{color:var(--accent2);opacity:.5}
+.clock-date{margin-top:8px;font-size:.92rem;color:var(--text-soft);font-weight:300}
+.clock-lunar{margin-top:6px;font-size:.85rem;color:var(--text-soft)}
+.clock-festival{display:inline-block;background:rgba(224,112,112,.15);color:#d65454;padding:2px 10px;border-radius:20px;font-size:.74rem;font-weight:500;margin-top:6px}
+.clock-weekday{display:inline-block;background:rgba(74,144,196,.15);color:var(--accent2);padding:2px 10px;border-radius:20px;font-size:.78rem;font-weight:500;margin-left:8px}
 
-    body {
-      font-family: 'DM Sans', 'Noto Sans SC', sans-serif;
-      background: linear-gradient(135deg, #e8f4fd 0%, #d4f5ee 40%, #fde8f5 100%);
-      min-height: 100vh;
-      color: var(--text);
-      padding: 24px 16px 40px;
-      overflow-x: hidden;
-    }
+.weather-card{background:var(--card-weather)}
+.weather-main{display:flex;align-items:center;gap:16px}
+.weather-icon{font-size:3rem;line-height:1}
+.weather-temp{font-family:'DM Serif Display',serif;font-size:2.7rem;line-height:1}
+.weather-temp sup{font-size:1.1rem;font-family:'DM Sans',sans-serif;color:var(--text-soft)}
+.weather-info{flex:1}
+.weather-desc{font-size:.98rem;font-weight:500;margin-top:2px}
+.weather-meta{font-size:.78rem;color:var(--text-soft);margin-top:6px}
+.weather-location{display:flex;align-items:center;justify-content:space-between;gap:4px;font-size:.78rem;color:var(--text-soft);margin-top:12px}
+.weather-city-btn{background:none;border:1px solid var(--card-border);color:var(--text-soft);font-size:.72rem;padding:3px 10px;border-radius:14px;cursor:pointer;font-family:inherit}
+.weather-loading{color:var(--text-soft);font-size:.9rem}
+.weather-error{color:var(--danger);font-size:.85rem}
 
-    /* Decorative blobs */
-    body::before, body::after {
-      content: '';
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(80px);
-      z-index: 0;
-      pointer-events: none;
-    }
-    body::before {
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(180,230,255,0.5), transparent 70%);
-      top: -100px; right: -100px;
-    }
-    body::after {
-      width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(200,255,220,0.4), transparent 70%);
-      bottom: -80px; left: -80px;
-    }
+.quote-card{background:var(--card-quote)}
+.quote-text{font-size:.98rem;line-height:1.7;font-weight:400}
+.quote-from{font-size:.78rem;color:var(--text-soft);margin-top:10px;text-align:right;font-style:italic}
 
-    .container {
-      max-width: 480px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
-    }
+.calendar-card{background:var(--card-calendar)}
+.calendar-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.cal-nav{background:none;border:none;color:var(--text-soft);cursor:pointer;font-size:1rem;padding:4px 10px;border-radius:8px;transition:background .2s}
+.cal-nav:hover{background:rgba(128,128,128,.1)}
+.cal-title{font-weight:500;font-size:.95rem}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.cal-dow{font-size:.65rem;color:var(--text-soft);font-weight:500;text-transform:uppercase;padding:2px 0 6px}
+.cal-day{font-size:.82rem;padding:6px 2px;border-radius:12px;cursor:default;transition:background .15s;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
+.cal-day.empty{opacity:0;pointer-events:none}
+.cal-day.today{background:var(--accent2);color:#fff;font-weight:500}
+.cal-day.sunday,.cal-day.saturday{color:var(--danger)}
+.cal-day.festival::after{content:'';position:absolute;bottom:3px;width:4px;height:4px;border-radius:50%;background:var(--danger)}
+.cal-day .cal-lunar{font-size:.55rem;color:var(--text-soft);margin-top:1px;line-height:1}
+.cal-day.today .cal-lunar{color:rgba(255,255,255,.85)}
 
-    /* Greeting */
-    .greeting {
-      text-align: center;
-      margin-bottom: 28px;
-      animation: fadeUp 0.6s ease both;
-    }
-    .greeting h1 {
-      font-family: 'DM Serif Display', serif;
-      font-size: 2rem;
-      color: var(--text);
-      letter-spacing: -0.5px;
-    }
-    .greeting p {
-      color: var(--text-soft);
-      font-size: 0.85rem;
-      margin-top: 4px;
-      font-weight: 300;
-    }
+.countdown-card{background:var(--card-countdown)}
+.cd-list{display:flex;flex-direction:column;gap:10px;margin-bottom:10px}
+.cd-item{display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.4);padding:10px 14px;border-radius:14px}
+html[data-theme="dark"] .cd-item,@media (prefers-color-scheme: dark){html:not([data-theme="light"]) .cd-item{background:rgba(255,255,255,.05)}}
+.cd-item-info{flex:1;min-width:0}
+.cd-item-name{font-size:.88rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cd-item-date{font-size:.7rem;color:var(--text-soft);margin-top:2px}
+.cd-item-value{font-family:'DM Serif Display',serif;font-size:1.4rem;color:var(--accent);margin-left:10px;white-space:nowrap}
+.cd-item-value.done{color:#3aa17e;font-size:1rem}
+.cd-item-del{background:none;border:none;color:var(--text-soft);cursor:pointer;font-size:1rem;margin-left:6px;padding:2px 6px;opacity:.6}
+.cd-item-del:hover{opacity:1}
+.cd-form{display:flex;flex-wrap:wrap;gap:8px}
+.cd-form input{flex:1;min-width:0;border:1px solid var(--card-border);border-radius:10px;padding:8px 12px;font:inherit;font-size:.85rem;background:rgba(255,255,255,.5);color:var(--text);outline:none}
+html[data-theme="dark"] .cd-form input,@media (prefers-color-scheme: dark){html:not([data-theme="light"]) .cd-form input{background:rgba(255,255,255,.05)}}
+.cd-form input:focus{border-color:var(--accent)}
+.cd-add{background:linear-gradient(135deg,#9b84e0,#b8a0e8);color:#fff;border:none;border-radius:10px;padding:8px 14px;font:inherit;font-size:.85rem;cursor:pointer}
+.cd-add:hover{opacity:.9}
 
-    /* Cards */
-    .card {
-      background: rgba(255,255,255,0.75);
-      backdrop-filter: blur(16px);
-      border-radius: var(--radius);
-      padding: 24px;
-      box-shadow: var(--shadow);
-      border: 1px solid rgba(255,255,255,0.9);
-      margin-bottom: 16px;
-      animation: fadeUp 0.6s ease both;
-    }
-    .card:nth-child(2) { animation-delay: 0.05s; }
-    .card:nth-child(3) { animation-delay: 0.10s; }
-    .card:nth-child(4) { animation-delay: 0.15s; }
-    .card:nth-child(5) { animation-delay: 0.20s; }
+.todo-card{background:var(--card-todo)}
+.todo-list{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;max-height:240px;overflow-y:auto}
+.todo-item{display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(255,255,255,.4);border-radius:12px}
+html[data-theme="dark"] .todo-item,@media (prefers-color-scheme: dark){html:not([data-theme="light"]) .todo-item{background:rgba(255,255,255,.05)}}
+.todo-item.done .todo-text{text-decoration:line-through;color:var(--text-soft)}
+.todo-check{width:18px;height:18px;border-radius:6px;border:1.5px solid var(--text-soft);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:none;color:transparent}
+.todo-check.done{background:#3aa17e;border-color:#3aa17e;color:#fff;font-size:.7rem}
+.todo-text{flex:1;font-size:.9rem;word-break:break-all;cursor:pointer}
+.todo-del{background:none;border:none;color:var(--text-soft);cursor:pointer;font-size:.95rem;opacity:.4}
+.todo-del:hover{opacity:1}
+.todo-form{display:flex;gap:8px}
+.todo-form input{flex:1;border:1px solid var(--card-border);border-radius:10px;padding:8px 12px;font:inherit;font-size:.85rem;background:rgba(255,255,255,.5);color:var(--text);outline:none}
+html[data-theme="dark"] .todo-form input,@media (prefers-color-scheme: dark){html:not([data-theme="light"]) .todo-form input{background:rgba(255,255,255,.05)}}
+.todo-form input:focus{border-color:#d89a4f}
+.todo-add{background:linear-gradient(135deg,#e8a55a,#f0b878);color:#fff;border:none;border-radius:10px;padding:8px 14px;font:inherit;font-size:.85rem;cursor:pointer}
+.todo-empty{color:var(--text-soft);font-size:.82rem;text-align:center;padding:14px}
 
-    .card-label {
-      font-size: 0.7rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--text-soft);
-      margin-bottom: 12px;
-    }
+.pomo-card{background:var(--card-pomo);text-align:center}
+.pomo-mode{display:inline-flex;gap:4px;background:rgba(255,255,255,.4);padding:3px;border-radius:12px;margin-bottom:14px}
+html[data-theme="dark"] .pomo-mode,@media (prefers-color-scheme: dark){html:not([data-theme="light"]) .pomo-mode{background:rgba(255,255,255,.05)}}
+.pomo-mode button{background:none;border:none;color:var(--text-soft);font:inherit;font-size:.78rem;padding:5px 12px;border-radius:9px;cursor:pointer}
+.pomo-mode button.active{background:#fff;color:var(--text);font-weight:500;box-shadow:0 2px 6px rgba(0,0,0,.05)}
+html[data-theme="dark"] .pomo-mode button.active,@media (prefers-color-scheme: dark){html:not([data-theme="light"]) .pomo-mode button.active{background:rgba(255,255,255,.15);color:var(--text)}}
+.pomo-time{font-family:'DM Serif Display',serif;font-size:3.5rem;line-height:1;letter-spacing:-2px;margin:6px 0}
+.pomo-controls{display:flex;gap:10px;justify-content:center;margin-top:14px}
+.pomo-btn{background:linear-gradient(135deg,#e08080,#f0a090);color:#fff;border:none;border-radius:12px;padding:8px 22px;font:inherit;font-size:.9rem;cursor:pointer;min-width:80px}
+.pomo-btn.secondary{background:none;border:1px solid var(--card-border);color:var(--text-soft)}
+.pomo-rounds{margin-top:10px;font-size:.78rem;color:var(--text-soft)}
 
-    /* Clock */
-    .clock-card { background: linear-gradient(135deg, rgba(232,244,253,0.9), rgba(255,255,255,0.85)); }
-    .clock-time {
-      font-family: 'DM Serif Display', serif;
-      font-size: 4rem;
-      line-height: 1;
-      letter-spacing: -2px;
-      color: var(--text);
-    }
-    .clock-time span { color: #a0c4e8; }
-    .clock-date {
-      margin-top: 8px;
-      font-size: 0.95rem;
-      color: var(--text-soft);
-      font-weight: 300;
-    }
-    .clock-weekday {
-      display: inline-block;
-      background: #e8f4fd;
-      color: #4a90c4;
-      padding: 2px 10px;
-      border-radius: 20px;
-      font-size: 0.78rem;
-      font-weight: 500;
-      margin-left: 8px;
-    }
-
-    /* Weather */
-    .weather-card { background: linear-gradient(135deg, rgba(212,240,232,0.9), rgba(255,255,255,0.85)); }
-    .weather-main {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-    .weather-icon { font-size: 3rem; line-height: 1; }
-    .weather-temp {
-      font-family: 'DM Serif Display', serif;
-      font-size: 3rem;
-      line-height: 1;
-      color: var(--text);
-    }
-    .weather-temp sup { font-size: 1.2rem; font-family: 'DM Sans', sans-serif; color: var(--text-soft); }
-    .weather-info { flex: 1; }
-    .weather-desc { font-size: 1rem; color: var(--text); font-weight: 500; margin-top: 2px; }
-    .weather-meta { font-size: 0.8rem; color: var(--text-soft); margin-top: 6px; }
-    .weather-location {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 0.78rem;
-      color: var(--text-soft);
-      margin-top: 12px;
-    }
-    .weather-loading { color: var(--text-soft); font-size: 0.9rem; }
-    .weather-error { color: #e07070; font-size: 0.85rem; }
-
-    /* Calendar */
-    .calendar-card { background: linear-gradient(135deg, rgba(255,240,250,0.9), rgba(255,255,255,0.85)); }
-    .calendar-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-    }
-    .cal-nav {
-      background: none;
-      border: none;
-      color: var(--text-soft);
-      cursor: pointer;
-      font-size: 1rem;
-      padding: 4px 8px;
-      border-radius: 8px;
-      transition: background 0.2s;
-    }
-    .cal-nav:hover { background: rgba(0,0,0,0.05); }
-    .cal-title { font-weight: 500; font-size: 0.95rem; }
-    .cal-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 4px;
-      text-align: center;
-    }
-    .cal-dow {
-      font-size: 0.65rem;
-      color: var(--text-soft);
-      font-weight: 500;
-      text-transform: uppercase;
-      padding: 2px 0 6px;
-    }
-    .cal-day {
-      font-size: 0.82rem;
-      padding: 6px 2px;
-      border-radius: 50%;
-      cursor: default;
-      transition: background 0.15s;
-      color: var(--text);
-      aspect-ratio: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .cal-day.empty { opacity: 0; pointer-events: none; }
-    .cal-day.today {
-      background: #4a90c4;
-      color: white;
-      font-weight: 500;
-    }
-    .cal-day.sunday { color: #e07070; }
-    .cal-day.saturday { color: #e07070; }
-
-    /* Countdown */
-    .countdown-card { background: linear-gradient(135deg, rgba(237,232,253,0.9), rgba(255,255,255,0.85)); }
-    .countdown-setup { display: flex; flex-direction: column; gap: 10px; }
-    .countdown-setup input[type="text"],
-    .countdown-setup input[type="date"] {
-      border: 1.5px solid rgba(150,130,220,0.3);
-      border-radius: 12px;
-      padding: 10px 14px;
-      font-family: 'DM Sans', 'Noto Sans SC', sans-serif;
-      font-size: 0.9rem;
-      color: var(--text);
-      background: rgba(255,255,255,0.7);
-      outline: none;
-      transition: border-color 0.2s;
-    }
-    .countdown-setup input:focus { border-color: #9b84e0; }
-    .countdown-btn {
-      background: linear-gradient(135deg, #9b84e0, #b8a0e8);
-      color: white;
-      border: none;
-      border-radius: 12px;
-      padding: 10px;
-      font-size: 0.9rem;
-      font-family: 'DM Sans', sans-serif;
-      cursor: pointer;
-      transition: opacity 0.2s;
-    }
-    .countdown-btn:hover { opacity: 0.85; }
-    .countdown-display { text-align: center; }
-    .countdown-name { font-size: 1rem; color: var(--text); font-weight: 500; margin-bottom: 16px; }
-    .countdown-numbers {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-    }
-    .cnt-unit { text-align: center; }
-    .cnt-val {
-      font-family: 'DM Serif Display', serif;
-      font-size: 2.2rem;
-      color: var(--text);
-      line-height: 1;
-      display: block;
-    }
-    .cnt-label {
-      font-size: 0.65rem;
-      color: var(--text-soft);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-top: 4px;
-    }
-    .cnt-sep {
-      font-family: 'DM Serif Display', serif;
-      font-size: 2rem;
-      color: #c0b0e8;
-      align-self: flex-start;
-      padding-top: 2px;
-    }
-    .countdown-done { font-size: 1.2rem; color: #9b84e0; }
-    .countdown-reset {
-      margin-top: 14px;
-      background: none;
-      border: 1.5px solid rgba(150,130,220,0.4);
-      border-radius: 10px;
-      padding: 6px 16px;
-      font-size: 0.78rem;
-      color: var(--text-soft);
-      cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-      transition: all 0.2s;
-    }
-    .countdown-reset:hover { background: rgba(150,130,220,0.1); }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  </style>
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.pomo-running .pomo-time{animation:pulse 2s infinite}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-thumb{background:rgba(128,128,128,.25);border-radius:3px}
+</style>
 </head>
 <body>
+<button class="theme-toggle" id="themeToggle" title="切换主题">🌙</button>
+
 <div class="container">
-
-  <div class="greeting" id="greeting">
+  <div class="greeting">
     <h1 id="greetText">你好 👋</h1>
-    <p>今天也是美好的一天</p>
+    <p id="greetSub">今天也是美好的一天</p>
   </div>
 
-  <!-- Clock -->
-  <div class="card clock-card">
-    <div class="card-label">现在时间</div>
-    <div class="clock-time" id="clockTime">00<span>:</span>00<span>:</span>00</div>
-    <div class="clock-date" id="clockDate">
-      <span id="clockDateText"></span>
-      <span class="clock-weekday" id="clockWeekday"></span>
+  <div class="grid">
+    <!-- Clock + 农历 + 节日 -->
+    <div class="card clock-card span-2">
+      <div class="card-label">⏰ 现在时间</div>
+      <div class="clock-time" id="clockTime">00<span>:</span>00<span>:</span>00</div>
+      <div class="clock-date">
+        <span id="clockDateText"></span>
+        <span class="clock-weekday" id="clockWeekday"></span>
+      </div>
+      <div class="clock-lunar" id="clockLunar"></div>
+      <div id="clockFestival"></div>
     </div>
-  </div>
 
-  <!-- Weather -->
-  <div class="card weather-card">
-    <div class="card-label">今日天气</div>
-    <div id="weatherContent">
-      <div class="weather-loading">📡 正在获取天气...</div>
+    <!-- Weather -->
+    <div class="card weather-card">
+      <div class="card-label">🌤 今日天气</div>
+      <div id="weatherContent"><div class="weather-loading">📡 正在获取天气...</div></div>
     </div>
-  </div>
 
-  <!-- Calendar -->
-  <div class="card calendar-card">
-    <div class="card-label">日历</div>
-    <div class="calendar-header">
-      <button class="cal-nav" id="calPrev">‹</button>
-      <span class="cal-title" id="calTitle"></span>
-      <button class="cal-nav" id="calNext">›</button>
-    </div>
-    <div class="cal-grid" id="calGrid"></div>
-  </div>
-
-  <!-- Countdown -->
-  <div class="card countdown-card">
-    <div class="card-label">倒计时</div>
-    <div id="countdownArea">
-      <div class="countdown-setup">
-        <input type="text" id="cdName" placeholder="事件名称，如：生日" maxlength="20">
-        <input type="date" id="cdDate">
-        <button class="countdown-btn" onclick="setCountdown()">开始倒计时</button>
+    <!-- Quote -->
+    <div class="card quote-card">
+      <div class="card-label">💬 一言</div>
+      <div id="quoteContent">
+        <div class="quote-text" id="quoteText">加载中…</div>
+        <div class="quote-from" id="quoteFrom"></div>
       </div>
     </div>
-  </div>
 
+    <!-- Calendar -->
+    <div class="card calendar-card span-2">
+      <div class="card-label">📅 日历</div>
+      <div class="calendar-header">
+        <button class="cal-nav" id="calPrev">‹</button>
+        <span class="cal-title" id="calTitle"></span>
+        <button class="cal-nav" id="calNext">›</button>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
+
+    <!-- Countdown -->
+    <div class="card countdown-card">
+      <div class="card-label">⏳ 倒计时</div>
+      <div class="cd-list" id="cdList"></div>
+      <div class="cd-form">
+        <input type="text" id="cdName" placeholder="事件名称" maxlength="20">
+        <input type="date" id="cdDate">
+        <button class="cd-add" onclick="addCountdown()">添加</button>
+      </div>
+    </div>
+
+    <!-- Todo -->
+    <div class="card todo-card">
+      <div class="card-label">📝 待办</div>
+      <div class="todo-list" id="todoList"></div>
+      <div class="todo-form">
+        <input type="text" id="todoInput" placeholder="添加一项待办..." maxlength="60">
+        <button class="todo-add" onclick="addTodo()">＋</button>
+      </div>
+    </div>
+
+    <!-- Pomodoro -->
+    <div class="card pomo-card span-2">
+      <div class="card-label" style="justify-content:center">🍅 番茄钟</div>
+      <div class="pomo-mode" id="pomoMode">
+        <button data-min="25" class="active">专注 25′</button>
+        <button data-min="5">小休 5′</button>
+        <button data-min="15">长休 15′</button>
+      </div>
+      <div class="pomo-time" id="pomoTime">25:00</div>
+      <div class="pomo-controls">
+        <button class="pomo-btn" id="pomoStart">开始</button>
+        <button class="pomo-btn secondary" id="pomoReset">重置</button>
+      </div>
+      <div class="pomo-rounds">今日已完成 <b id="pomoCount">0</b> 个番茄</div>
+    </div>
+  </div>
 </div>
 
 <script>
-  // ===== CLOCK =====
-  const weekdays = ['周日','周一','周二','周三','周四','周五','周六'];
-  const months = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+// ============ THEME ============
+const themeToggle = document.getElementById('themeToggle');
+function applyTheme(t){
+  document.documentElement.setAttribute('data-theme', t);
+  themeToggle.textContent = t === 'dark' ? '☀️' : '🌙';
+  localStorage.setItem('theme', t);
+}
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme) applyTheme(savedTheme);
+else applyTheme(matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+themeToggle.onclick = () => applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
 
-  function updateClock() {
-    const now = new Date();
-    const h = String(now.getHours()).padStart(2,'0');
-    const m = String(now.getMinutes()).padStart(2,'0');
-    const s = String(now.getSeconds()).padStart(2,'0');
-    document.getElementById('clockTime').innerHTML = `${h}<span>:</span>${m}<span>:</span>${s}`;
-    document.getElementById('clockDateText').textContent =
-      `${now.getFullYear()}年${months[now.getMonth()]}${now.getDate()}日`;
-    document.getElementById('clockWeekday').textContent = weekdays[now.getDay()];
+// ============ LUNAR (1900-2100) ============
+// 农历数据：每年16位，前12/13位为月大小(1=30天,0=29天)，后4位为闰月月份(0=无闰)
+const LUNAR_INFO=[0x04bd8,0x04ae0,0x0a570,0x054d5,0x0d260,0x0d950,0x16554,0x056a0,0x09ad0,0x055d2,0x04ae0,0x0a5b6,0x0a4d0,0x0d250,0x1d255,0x0b540,0x0d6a0,0x0ada2,0x095b0,0x14977,0x04970,0x0a4b0,0x0b4b5,0x06a50,0x06d40,0x1ab54,0x02b60,0x09570,0x052f2,0x04970,0x06566,0x0d4a0,0x0ea50,0x06e95,0x05ad0,0x02b60,0x186e3,0x092e0,0x1c8d7,0x0c950,0x0d4a0,0x1d8a6,0x0b550,0x056a0,0x1a5b4,0x025d0,0x092d0,0x0d2b2,0x0a950,0x0b557,0x06ca0,0x0b550,0x15355,0x04da0,0x0a5b0,0x14573,0x052b0,0x0a9a8,0x0e950,0x06aa0,0x0aea6,0x0ab50,0x04b60,0x0aae4,0x0a570,0x05260,0x0f263,0x0d950,0x05b57,0x056a0,0x096d0,0x04dd5,0x04ad0,0x0a4d0,0x0d4d4,0x0d250,0x0d558,0x0b540,0x0b5a0,0x195a6,0x095b0,0x049b0,0x0a974,0x0a4b0,0x0b27a,0x06a50,0x06d40,0x0af46,0x0ab60,0x09570,0x04af5,0x04970,0x064b0,0x074a3,0x0ea50,0x06b58,0x055c0,0x0ab60,0x096d5,0x092e0,0x0c960,0x0d954,0x0d4a0,0x0da50,0x07552,0x056a0,0x0abb7,0x025d0,0x092d0,0x0cab5,0x0a950,0x0b4a0,0x0baa4,0x0ad50,0x055d9,0x04ba0,0x0a5b0,0x15176,0x052b0,0x0a930,0x07954,0x06aa0,0x0ad50,0x05b52,0x04b60,0x0a6e6,0x0a4e0,0x0d260,0x0ea65,0x0d530,0x05aa0,0x076a3,0x096d0,0x04bd7,0x04ad0,0x0a4d0,0x1d0b6,0x0d250,0x0d520,0x0dd45,0x0b5a0,0x056d0,0x055b2,0x049b0,0x0a577,0x0a4b0,0x0aa50,0x1b255,0x06d20,0x0ada0,0x14b63];
+const LUNAR_TERMS=['初一','初二','初三','初四','初五','初六','初七','初八','初九','初十','十一','十二','十三','十四','十五','十六','十七','十八','十九','二十','廿一','廿二','廿三','廿四','廿五','廿六','廿七','廿八','廿九','三十'];
+const LUNAR_MONTHS=['正','二','三','四','五','六','七','八','九','十','冬','腊'];
+const LUNAR_ANIMALS=['鼠','牛','虎','兔','龙','蛇','马','羊','猴','鸡','狗','猪'];
+const TIANGAN=['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+const DIZHI=['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
 
-    const hour = now.getHours();
-    const greetEl = document.getElementById('greetText');
-    if (hour < 6) greetEl.textContent = '夜深了 🌙';
-    else if (hour < 12) greetEl.textContent = '早上好 ☀️';
-    else if (hour < 14) greetEl.textContent = '中午好 🌤';
-    else if (hour < 18) greetEl.textContent = '下午好 🌈';
-    else greetEl.textContent = '晚上好 🌙';
+function lYearDays(y){let s=348;for(let i=0x8000;i>0x8;i>>=1)s+=(LUNAR_INFO[y-1900]&i)?1:0;return s+leapDays(y)}
+function leapMonth(y){return LUNAR_INFO[y-1900]&0xf}
+function leapDays(y){return leapMonth(y)?((LUNAR_INFO[y-1900]&0x10000)?30:29):0}
+function monthDays(y,m){return(LUNAR_INFO[y-1900]&(0x10000>>m))?30:29}
+
+function solarToLunar(date){
+  const baseDate=new Date(1900,0,31);
+  let offset=Math.floor((date-baseDate)/86400000);
+  let y=1900,daysOfYear=0;
+  for(;y<2100&&offset>0;y++){daysOfYear=lYearDays(y);offset-=daysOfYear}
+  if(offset<0){offset+=daysOfYear;y--}
+  const animal=LUNAR_ANIMALS[(y-4)%12];
+  const lm=leapMonth(y);let isLeap=false,m=1,days;
+  for(;m<13&&offset>0;m++){
+    if(lm>0&&m===lm+1&&!isLeap){--m;isLeap=true;days=leapDays(y)}
+    else{days=monthDays(y,m)}
+    if(isLeap&&m===lm+1)isLeap=false;
+    offset-=days;
   }
-  updateClock();
-  setInterval(updateClock, 1000);
+  if(offset===0&&lm>0&&m===lm+1){if(isLeap)isLeap=false;else{isLeap=true;--m}}
+  if(offset<0){offset+=days;--m}
+  const d=offset+1;
+  // 干支
+  const gy=(y-4)%10,gz=(y-4)%12;
+  return{year:y,month:m,day:d,isLeap,animal,ganzhi:TIANGAN[gy]+DIZHI[gz],
+    monthName:(isLeap?'闰':'')+LUNAR_MONTHS[m-1]+'月',
+    dayName:LUNAR_TERMS[d-1]};
+}
 
-  // ===== WEATHER =====
-  const weatherCodes = {
-    0: ['☀️','晴天'], 1: ['🌤','大部晴朗'], 2: ['⛅','局部多云'], 3: ['☁️','阴天'],
-    45: ['🌫','雾'], 48: ['🌫','霜雾'],
-    51: ['🌦','小毛毛雨'], 53: ['🌦','毛毛雨'], 55: ['🌧','大毛毛雨'],
-    61: ['🌧','小雨'], 63: ['🌧','中雨'], 65: ['🌧','大雨'],
-    71: ['🌨','小雪'], 73: ['🌨','中雪'], 75: ['❄️','大雪'],
-    80: ['🌦','小阵雨'], 81: ['🌧','中阵雨'], 82: ['⛈','大阵雨'],
-    95: ['⛈','雷阵雨'], 96: ['⛈','雷雨夹冰雹'], 99: ['⛈','强雷雨']
-  };
+// ============ FESTIVALS ============
+// 公历节日 {MM-DD: name}
+const SOLAR_FEST={'01-01':'元旦','02-14':'情人节','03-08':'妇女节','03-12':'植树节','04-01':'愚人节','05-01':'劳动节','05-04':'青年节','06-01':'儿童节','07-01':'建党节','08-01':'建军节','09-10':'教师节','10-01':'国庆节','12-24':'平安夜','12-25':'圣诞节'};
+// 农历节日 {M-D: name} (M从1开始)
+const LUNAR_FEST={'1-1':'春节','1-15':'元宵','2-2':'龙抬头','5-5':'端午','7-7':'七夕','7-15':'中元','8-15':'中秋','9-9':'重阳','12-8':'腊八','12-23':'小年'};
+function getFestival(date){
+  const mm=String(date.getMonth()+1).padStart(2,'0');
+  const dd=String(date.getDate()).padStart(2,'0');
+  const sol=SOLAR_FEST[`${mm}-${dd}`];
+  const lu=solarToLunar(date);
+  const lk=`${lu.month}-${lu.day}`;
+  const lunar=!lu.isLeap?LUNAR_FEST[lk]:null;
+  // 除夕（腊月最后一天）
+  let xichu=null;
+  if(lu.month===12){
+    const lastDay=monthDays(lu.year,12);
+    if(lu.day===lastDay)xichu='除夕';
+  }
+  return[sol,lunar,xichu].filter(Boolean).join(' · ');
+}
 
-  async function fetchWeather() {
-    try {
-      const geoRes = await fetch('https://ipapi.co/json/');
-      const geo = await geoRes.json();
-      const { latitude: lat, longitude: lon, city, country_name } = geo;
+// ============ CLOCK ============
+const weekdays=['周日','周一','周二','周三','周四','周五','周六'];
+const months=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+function updateClock(){
+  const now=new Date();
+  const h=String(now.getHours()).padStart(2,'0');
+  const m=String(now.getMinutes()).padStart(2,'0');
+  const s=String(now.getSeconds()).padStart(2,'0');
+  document.getElementById('clockTime').innerHTML=`${h}<span>:</span>${m}<span>:</span>${s}`;
+  document.getElementById('clockDateText').textContent=`${now.getFullYear()}年${months[now.getMonth()]}${now.getDate()}日`;
+  document.getElementById('clockWeekday').textContent=weekdays[now.getDay()];
+  const lu=solarToLunar(now);
+  document.getElementById('clockLunar').textContent=`农历 ${lu.monthName}${lu.dayName} · ${lu.ganzhi}${lu.animal}年`;
+  const fest=getFestival(now);
+  document.getElementById('clockFestival').innerHTML=fest?`<span class="clock-festival">🎉 ${fest}</span>`:'';
+  const hour=now.getHours();
+  const g=document.getElementById('greetText');
+  const gs=document.getElementById('greetSub');
+  if(hour<6){g.textContent='夜深了 🌙';gs.textContent='早点休息吧'}
+  else if(hour<12){g.textContent='早上好 ☀️';gs.textContent='新的一天开始啦'}
+  else if(hour<14){g.textContent='中午好 🌤';gs.textContent='记得吃午饭哦'}
+  else if(hour<18){g.textContent='下午好 🌈';gs.textContent='继续加油吧'}
+  else{g.textContent='晚上好 🌙';gs.textContent='今天辛苦了'}
+}
+updateClock();setInterval(updateClock,1000);
 
-      const wRes = await fetch(
-        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&wind_speed_unit=kmh&timezone=auto`
-      );
-      const w = await wRes.json();
-      const cur = w.current;
-      const [icon, desc] = weatherCodes[cur.weather_code] || ['🌡','未知'];
-
-      document.getElementById('weatherContent').innerHTML = `
-        <div class="weather-main">
-          <div class="weather-icon">${icon}</div>
-          <div class="weather-info">
-            <div class="weather-temp">${Math.round(cur.temperature_2m)}<sup>°C</sup></div>
-            <div class="weather-desc">${desc}</div>
-            <div class="weather-meta">💧 ${cur.relative_humidity_2m}% 湿度 · 💨 ${Math.round(cur.wind_speed_10m)} km/h</div>
-          </div>
+// ============ WEATHER ============
+const weatherCodes={0:['☀️','晴'],1:['🌤','大部晴'],2:['⛅','局部多云'],3:['☁️','阴'],45:['🌫','雾'],48:['🌫','霜雾'],51:['🌦','小毛毛雨'],53:['🌦','毛毛雨'],55:['🌧','大毛毛雨'],61:['🌧','小雨'],63:['🌧','中雨'],65:['🌧','大雨'],66:['🌧','冻雨'],71:['🌨','小雪'],73:['🌨','中雪'],75:['❄️','大雪'],80:['🌦','小阵雨'],81:['🌧','中阵雨'],82:['⛈','大阵雨'],95:['⛈','雷阵雨'],96:['⛈','雷雨夹冰雹'],99:['⛈','强雷雨']};
+async function fetchGeo(){
+  // 缓存的城市
+  const cached=localStorage.getItem('geo');
+  if(cached){try{const g=JSON.parse(cached);if(g&&g.t&&Date.now()-g.t<3600000*24)return g}catch(e){}}
+  // 多源尝试
+  const sources=[
+    ['https://ipapi.co/json/',j=>({lat:j.latitude,lon:j.longitude,city:j.city,country:j.country_name})],
+    ['https://ipwho.is/',j=>({lat:j.latitude,lon:j.longitude,city:j.city,country:j.country})],
+    ['https://api.ip.sb/geoip',j=>({lat:j.latitude,lon:j.longitude,city:j.city,country:j.country})],
+  ];
+  for(const[u,map]of sources){
+    try{const j=await(await fetch(u,{timeout:5000})).json();const g=map(j);if(g.lat&&g.lon){g.t=Date.now();localStorage.setItem('geo',JSON.stringify(g));return g}}catch(e){}
+  }
+  throw new Error('geo failed');
+}
+async function fetchWeather(){
+  const el=document.getElementById('weatherContent');
+  try{
+    const g=await fetchGeo();
+    const w=await(await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${g.lat}&longitude=${g.lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,apparent_temperature&wind_speed_unit=kmh&timezone=auto`)).json();
+    const c=w.current;const[icon,desc]=weatherCodes[c.weather_code]||['🌡','未知'];
+    el.innerHTML=`
+      <div class="weather-main">
+        <div class="weather-icon">${icon}</div>
+        <div class="weather-info">
+          <div class="weather-temp">${Math.round(c.temperature_2m)}<sup>°C</sup></div>
+          <div class="weather-desc">${desc} · 体感 ${Math.round(c.apparent_temperature)}°</div>
+          <div class="weather-meta">💧 ${c.relative_humidity_2m}% · 💨 ${Math.round(c.wind_speed_10m)} km/h</div>
         </div>
-        <div class="weather-location">📍 ${city}，${country_name}</div>
-      `;
-    } catch(e) {
-      document.getElementById('weatherContent').innerHTML =
-        `<div class="weather-error">⚠️ 天气获取失败，请检查网络</div>`;
-    }
-  }
-  fetchWeather();
-
-  // ===== CALENDAR =====
-  let calYear, calMonth;
-  const now0 = new Date();
-  calYear = now0.getFullYear();
-  calMonth = now0.getMonth();
-
-  function renderCalendar() {
-    const today = new Date();
-    document.getElementById('calTitle').textContent =
-      `${calYear}年${calMonth+1}月`;
-    const firstDay = new Date(calYear, calMonth, 1).getDay();
-    const daysInMonth = new Date(calYear, calMonth+1, 0).getDate();
-
-    const dows = ['日','一','二','三','四','五','六'];
-    let html = dows.map(d => `<div class="cal-dow">${d}</div>`).join('');
-
-    for (let i = 0; i < firstDay; i++) html += `<div class="cal-day empty"></div>`;
-    for (let d = 1; d <= daysInMonth; d++) {
-      const isToday = d === today.getDate() && calMonth === today.getMonth() && calYear === today.getFullYear();
-      const dow = (firstDay + d - 1) % 7;
-      const cls = ['cal-day', isToday ? 'today' : '', dow===0 ? 'sunday' : dow===6 ? 'saturday' : ''].filter(Boolean).join(' ');
-      html += `<div class="${cls}">${d}</div>`;
-    }
-    document.getElementById('calGrid').innerHTML = html;
-  }
-  renderCalendar();
-  document.getElementById('calPrev').onclick = () => {
-    calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } renderCalendar();
-  };
-  document.getElementById('calNext').onclick = () => {
-    calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } renderCalendar();
-  };
-
-  // ===== COUNTDOWN =====
-  let cdInterval = null;
-  const cdKey = 'countdown_data';
-
-  function setCountdown() {
-    const name = document.getElementById('cdName').value.trim() || '倒计时';
-    const dateVal = document.getElementById('cdDate').value;
-    if (!dateVal) { alert('请选择日期！'); return; }
-    const data = { name, date: dateVal };
-    localStorage.setItem(cdKey, JSON.stringify(data));
-    startCountdown(data);
-  }
-
-  function startCountdown(data) {
-    if (cdInterval) clearInterval(cdInterval);
-    function render() {
-      const target = new Date(data.date + 'T00:00:00');
-      const now = new Date();
-      const diff = target - now;
-      if (diff <= 0) {
-        document.getElementById('countdownArea').innerHTML = `
-          <div class="countdown-display">
-            <div class="countdown-name">${data.name}</div>
-            <div class="countdown-done">🎉 已到达！</div>
-            <button class="countdown-reset" onclick="resetCountdown()">重新设置</button>
-          </div>`;
-        clearInterval(cdInterval);
-        return;
-      }
-      const days = Math.floor(diff / 86400000);
-      const hours = Math.floor((diff % 86400000) / 3600000);
-      const mins = Math.floor((diff % 3600000) / 60000);
-      const secs = Math.floor((diff % 60000) / 1000);
-      document.getElementById('countdownArea').innerHTML = `
-        <div class="countdown-display">
-          <div class="countdown-name">距离「${data.name}」</div>
-          <div class="countdown-numbers">
-            <div class="cnt-unit"><span class="cnt-val">${days}</span><span class="cnt-label">天</span></div>
-            <div class="cnt-sep">·</div>
-            <div class="cnt-unit"><span class="cnt-val">${String(hours).padStart(2,'0')}</span><span class="cnt-label">时</span></div>
-            <div class="cnt-sep">·</div>
-            <div class="cnt-unit"><span class="cnt-val">${String(mins).padStart(2,'0')}</span><span class="cnt-label">分</span></div>
-            <div class="cnt-sep">·</div>
-            <div class="cnt-unit"><span class="cnt-val">${String(secs).padStart(2,'0')}</span><span class="cnt-label">秒</span></div>
-          </div>
-          <button class="countdown-reset" onclick="resetCountdown()">重新设置</button>
-        </div>`;
-    }
-    render();
-    cdInterval = setInterval(render, 1000);
-  }
-
-  function resetCountdown() {
-    if (cdInterval) clearInterval(cdInterval);
-    localStorage.removeItem(cdKey);
-    document.getElementById('countdownArea').innerHTML = `
-      <div class="countdown-setup">
-        <input type="text" id="cdName" placeholder="事件名称，如：生日" maxlength="20">
-        <input type="date" id="cdDate">
-        <button class="countdown-btn" onclick="setCountdown()">开始倒计时</button>
+      </div>
+      <div class="weather-location">
+        <span>📍 ${g.city||'未知'}${g.country?'，'+g.country:''}</span>
+        <button class="weather-city-btn" onclick="changeCity()">换城市</button>
       </div>`;
+  }catch(e){
+    el.innerHTML=`<div class="weather-error">⚠️ 天气获取失败 <button class="weather-city-btn" onclick="changeCity()" style="margin-left:8px">手动设置</button></div>`;
   }
+}
+async function changeCity(){
+  const name=prompt('输入城市名（拼音/英文最稳）：','Beijing');
+  if(!name)return;
+  try{
+    const j=await(await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(name)}&count=1&language=zh`)).json();
+    if(j.results&&j.results[0]){
+      const r=j.results[0];
+      localStorage.setItem('geo',JSON.stringify({lat:r.latitude,lon:r.longitude,city:r.name,country:r.country,t:Date.now()}));
+      fetchWeather();
+    }else alert('未找到该城市');
+  }catch(e){alert('查询失败')}
+}
+fetchWeather();
 
-  // Load saved countdown
-  try {
-    const saved = localStorage.getItem(cdKey);
-    if (saved) startCountdown(JSON.parse(saved));
-  } catch(e) {}
+// ============ QUOTE ============
+const FALLBACK_QUOTES=[
+  {hitokoto:'路漫漫其修远兮，吾将上下而求索。',from_who:'屈原',from:'离骚'},
+  {hitokoto:'山不在高，有仙则名。',from_who:'刘禹锡',from:'陋室铭'},
+  {hitokoto:'人生若只如初见，何事秋风悲画扇。',from_who:'纳兰性德',from:'木兰花令'},
+  {hitokoto:'但愿人长久，千里共婵娟。',from_who:'苏轼',from:'水调歌头'},
+  {hitokoto:'落霞与孤鹜齐飞，秋水共长天一色。',from_who:'王勃',from:'滕王阁序'},
+];
+async function fetchQuote(){
+  try{
+    const j=await(await fetch('https://v1.hitokoto.cn/?c=i&c=k&encode=json',{cache:'no-store'})).json();
+    document.getElementById('quoteText').textContent=j.hitokoto;
+    document.getElementById('quoteFrom').textContent=j.from_who?`— ${j.from_who} 《${j.from}》`:(j.from?`— ${j.from}`:'');
+  }catch(e){
+    const f=FALLBACK_QUOTES[Math.floor(Math.random()*FALLBACK_QUOTES.length)];
+    document.getElementById('quoteText').textContent=f.hitokoto;
+    document.getElementById('quoteFrom').textContent=`— ${f.from_who} 《${f.from}》`;
+  }
+}
+fetchQuote();
+document.getElementById('quoteContent').onclick=fetchQuote;document.getElementById('quoteContent').style.cursor='pointer';
+
+// ============ CALENDAR ============
+let calYear,calMonth;const now0=new Date();calYear=now0.getFullYear();calMonth=now0.getMonth();
+function renderCalendar(){
+  const today=new Date();
+  document.getElementById('calTitle').textContent=`${calYear}年${calMonth+1}月`;
+  const firstDay=new Date(calYear,calMonth,1).getDay();
+  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+  let html=['日','一','二','三','四','五','六'].map(d=>`<div class="cal-dow">${d}</div>`).join('');
+  for(let i=0;i<firstDay;i++)html+=`<div class="cal-day empty"></div>`;
+  for(let d=1;d<=daysInMonth;d++){
+    const dt=new Date(calYear,calMonth,d);
+    const isToday=d===today.getDate()&&calMonth===today.getMonth()&&calYear===today.getFullYear();
+    const dow=(firstDay+d-1)%7;
+    const fest=getFestival(dt);
+    const lu=solarToLunar(dt);
+    const lunarShort=lu.day===1?lu.monthName:lu.dayName;
+    const cls=['cal-day',isToday?'today':'',dow===0?'sunday':dow===6?'saturday':'',fest?'festival':''].filter(Boolean).join(' ');
+    html+=`<div class="${cls}" title="${fest||lu.monthName+lu.dayName}">${d}<span class="cal-lunar">${lunarShort}</span></div>`;
+  }
+  document.getElementById('calGrid').innerHTML=html;
+}
+renderCalendar();
+document.getElementById('calPrev').onclick=()=>{calMonth--;if(calMonth<0){calMonth=11;calYear--}renderCalendar()};
+document.getElementById('calNext').onclick=()=>{calMonth++;if(calMonth>11){calMonth=0;calYear++}renderCalendar()};
+
+// ============ COUNTDOWN (多个) ============
+const CDS_KEY='countdowns_v2';
+function loadCds(){try{return JSON.parse(localStorage.getItem(CDS_KEY)||'[]')}catch(e){return[]}}
+function saveCds(c){localStorage.setItem(CDS_KEY,JSON.stringify(c))}
+function renderCds(){
+  const list=loadCds();const el=document.getElementById('cdList');
+  if(list.length===0){el.innerHTML='<div class="todo-empty" style="padding:6px">还没添加倒计时哦</div>';return}
+  const now=new Date();
+  el.innerHTML=list.map((c,i)=>{
+    const t=new Date(c.date+'T00:00:00');
+    const diff=t-now;const days=Math.ceil(diff/86400000);
+    const val=diff<=0?'<span class="cd-item-value done">已到达 🎉</span>':`<span class="cd-item-value">${days}<span style="font-size:.7em;color:var(--text-soft);margin-left:2px">天</span></span>`;
+    return`<div class="cd-item"><div class="cd-item-info"><div class="cd-item-name">${c.name}</div><div class="cd-item-date">${c.date}</div></div>${val}<button class="cd-item-del" onclick="delCd(${i})">×</button></div>`;
+  }).join('');
+}
+function addCountdown(){
+  const name=document.getElementById('cdName').value.trim();
+  const date=document.getElementById('cdDate').value;
+  if(!name||!date){alert('请填写名称和日期');return}
+  const list=loadCds();list.push({name,date});saveCds(list);
+  document.getElementById('cdName').value='';document.getElementById('cdDate').value='';
+  renderCds();
+}
+function delCd(i){const list=loadCds();list.splice(i,1);saveCds(list);renderCds()}
+renderCds();setInterval(renderCds,60000);
+
+// ============ TODO ============
+const TODOS_KEY='todos_v2';
+function loadTodos(){try{return JSON.parse(localStorage.getItem(TODOS_KEY)||'[]')}catch(e){return[]}}
+function saveTodos(t){localStorage.setItem(TODOS_KEY,JSON.stringify(t))}
+function renderTodos(){
+  const list=loadTodos();const el=document.getElementById('todoList');
+  if(list.length===0){el.innerHTML='<div class="todo-empty">空空如也，开始安排今天的事吧</div>';return}
+  el.innerHTML=list.map((t,i)=>`
+    <div class="todo-item ${t.done?'done':''}">
+      <button class="todo-check ${t.done?'done':''}" onclick="toggleTodo(${i})">${t.done?'✓':''}</button>
+      <div class="todo-text" onclick="toggleTodo(${i})">${t.text.replace(/</g,'&lt;')}</div>
+      <button class="todo-del" onclick="delTodo(${i})">×</button>
+    </div>`).join('');
+}
+function addTodo(){
+  const inp=document.getElementById('todoInput');const v=inp.value.trim();if(!v)return;
+  const list=loadTodos();list.push({text:v,done:false});saveTodos(list);inp.value='';renderTodos();
+}
+function toggleTodo(i){const list=loadTodos();list[i].done=!list[i].done;saveTodos(list);renderTodos()}
+function delTodo(i){const list=loadTodos();list.splice(i,1);saveTodos(list);renderTodos()}
+document.getElementById('todoInput').addEventListener('keydown',e=>{if(e.key==='Enter')addTodo()});
+renderTodos();
+
+// ============ POMODORO ============
+let pomoDur=25*60,pomoLeft=25*60,pomoTimer=null,pomoCount=parseInt(localStorage.getItem('pomoCount_'+new Date().toDateString())||'0');
+document.getElementById('pomoCount').textContent=pomoCount;
+function renderPomo(){
+  const m=Math.floor(pomoLeft/60),s=pomoLeft%60;
+  document.getElementById('pomoTime').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  document.title=pomoTimer?`(${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}) 蜗牛主页`:'蜗牛主页';
+}
+function pomoStart(){
+  if(pomoTimer){clearInterval(pomoTimer);pomoTimer=null;document.getElementById('pomoStart').textContent='开始';document.querySelector('.pomo-card').classList.remove('pomo-running');return}
+  pomoTimer=setInterval(()=>{
+    pomoLeft--;
+    if(pomoLeft<=0){
+      clearInterval(pomoTimer);pomoTimer=null;
+      if(pomoDur===25*60){pomoCount++;localStorage.setItem('pomoCount_'+new Date().toDateString(),pomoCount);document.getElementById('pomoCount').textContent=pomoCount}
+      pomoLeft=pomoDur;renderPomo();
+      document.getElementById('pomoStart').textContent='开始';
+      document.querySelector('.pomo-card').classList.remove('pomo-running');
+      if('Notification' in window&&Notification.permission==='granted')new Notification('番茄钟','已结束！');
+      try{new Audio('data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=').play()}catch(e){}
+      alert('🍅 时间到！');return;
+    }
+    renderPomo();
+  },1000);
+  document.getElementById('pomoStart').textContent='暂停';
+  document.querySelector('.pomo-card').classList.add('pomo-running');
+  if('Notification' in window&&Notification.permission==='default')Notification.requestPermission();
+}
+function pomoReset(){if(pomoTimer){clearInterval(pomoTimer);pomoTimer=null}pomoLeft=pomoDur;renderPomo();document.getElementById('pomoStart').textContent='开始';document.querySelector('.pomo-card').classList.remove('pomo-running')}
+document.getElementById('pomoStart').onclick=pomoStart;
+document.getElementById('pomoReset').onclick=pomoReset;
+document.getElementById('pomoMode').addEventListener('click',e=>{
+  if(e.target.tagName!=='BUTTON')return;
+  document.querySelectorAll('#pomoMode button').forEach(b=>b.classList.remove('active'));
+  e.target.classList.add('active');
+  pomoDur=parseInt(e.target.dataset.min)*60;pomoReset();
+});
+renderPomo();
+
+// ============ PWA ============
+if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})})}
 </script>
 </body>
 </html>
-
